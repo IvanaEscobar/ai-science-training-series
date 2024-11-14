@@ -55,3 +55,24 @@ You need to submit either Theory Homework or Hands-on Homework.
 Contributors: [Siddhisanket (Sid) Raskar](https://sraskar.github.io/), [Murali Emani](https://memani1.github.io/), [Varuni Sastry](https://www.alcf.anl.gov/about/people/varuni-katti-sastry), [Bill Arnold](https://www.alcf.anl.gov/about/people/bill-arnold), and  [Venkat Vishwanath](https://www.alcf.anl.gov/about/people/venkatram-vishwanath).
 
 > This research used resources of the Argonne Leadership Computing Facility, which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357.
+
+
+---
+# Solution
+
+The key architectural features that make these systems suitable for AI workloads is the memory is uniformly distributed across cores, whereas traditional architectures hold memory seperate from cores. Cerebras has SwarmX, which manages synchronization of memory by using broadcast and reduce.
+
+
+Differences between AI accelerator systems in terms of architecture and programming models:
+- AI accelerator systems programming is prioritized by the availability of the data in the operation, called dataflow. 
+- The dataflow is represented as a graph, snd the compiler will maps the program onto the architecture.
+
+
+A typical workflow for refactoring an AI model to run on ALCF AI testbeds:
+- Cerebras: Uses PyTorch along with a CerebrasAPI. Most of the software stack remains the same. You can insatll the cerebrasAPI via `pip install` 
+- Cerebras uses Kubernetes for job submission
+- Graphcore: MIMD architecture. IPU uses bulk synchronous parallel means the entire chip with be in local tile compute, global cross-tile sync, or data exchange modes. You hve to ssh into the graphcore loginnode, then ssh into the poplar node. 
+- Graphcore uses SLURM for job submission
+
+Example of a project that could use AI accelerators: 
+- the AI accelerators could accelerate reading through data. For example, banks holld a large amount of data to track and understand transactions done by their clients. These AI accelerators could be dedicated to train on transaction data and determine anomolous behavior. This would help against fraud transactions.
